@@ -1,9 +1,7 @@
 'use strict'
 
-angular.module('app')
-  .controller 'MainCtrl', ($scope) ->
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate'
-      'AngularJS'
-      'Karma'
-    ]
+angular.module('app').controller('MainCtrl', ["$scope", "$http", ($scope, $http) ->
+  $http.get('/api/articles').success((articles) ->
+  	$scope.awesomeArticles = articles
+  )  
+])

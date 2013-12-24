@@ -17,6 +17,12 @@
 </div>
 
 <div class="row marketing">
+  <div ng-repeat="article in awesomeArticles">
+    {{article.title}}<br>
+    {{article.body}}<br>
+    <hr>
+  </div>
+
   <h4>HTML5 Boilerplate</h4>
   <p>
     HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
