@@ -1,15 +1,21 @@
 'use strict'
 
-angular.module('webappApp', [
+app = angular.module('app', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ngRoute'
 ])
-  .config ($routeProvider) ->
-    $routeProvider
-      .when '/',
-        templateUrl: 'views/main.html'
-        controller: 'MainCtrl'
-      .otherwise
-        redirectTo: '/'
+
+app.config(["$locationProvider", ($locationProvider) ->
+  $locationProvider.html5Mode(true)
+])
+
+app.config(["$routeProvider", ($routeProvider) ->
+  $routeProvider
+  .when '/',
+    templateUrl: 'views/main.html'
+    controller: 'MainCtrl'
+  .otherwise
+    redirectTo: '/'
+])
