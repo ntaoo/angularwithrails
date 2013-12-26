@@ -16,6 +16,15 @@ app.config(["$routeProvider", ($routeProvider) ->
   .when '/',
     templateUrl: 'views/main.html'
     controller: 'MainCtrl'
+  .when '/sign_in',
+    templateUrl: 'views/sign_in.html'
+    controller: 'SignInCtrl'
+  .when '/sign_up',
+    templateUrl: 'views/sign_up.html'
+    controller: 'SignUpCtrl'
+  .when '/articles',
+    templateUrl: 'views/articles.html'
+    controller: 'ArticlesCtrl'
   .otherwise
     redirectTo: '/'
 ])

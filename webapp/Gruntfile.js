@@ -1,4 +1,4 @@
-// Generated on 2013-12-24 using generator-angular 0.6.0
+// Generated on 2013-12-26 using generator-angular 0.7.1
 'use strict';
 
 // # Globbing
@@ -7,7 +7,6 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -50,6 +49,7 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
+          '.tmp/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -63,27 +63,8 @@ module.exports = function (grunt) {
         hostname: 'localhost',
         livereload: 35729
       },
-      proxies: [
-        {
-          context: '/api',
-          host: 'localhost',
-          port: 5000,
-          https: false,
-          changeOrigin: false,
-          xforward: false
-        }
-      ],
       livereload: {
         options: {
-          middleware: function (connect, options) {
-            var middlewares = [];
-            options.base.forEach(function(base) {
-              // Serve static files.
-              middlewares.push(connect.static(base));
-            });
-            middlewares.push(proxySnippet);
-            return middlewares;
-          },
           open: true,
           base: [
             '.tmp',
@@ -149,7 +130,15 @@ module.exports = function (grunt) {
       }
     },
 
-    
+    // Automatically inject Bower components into the app
+    'bower-install': {
+      app: {
+        html: '<%= yeoman.app %>/index.html',
+        ignorePath: '<%= yeoman.app %>/'
+      }
+    },
+
+
     // Compiles CoffeeScript to JavaScript
     coffee: {
       options: {
@@ -176,7 +165,7 @@ module.exports = function (grunt) {
       }
     },
 
-    
+
 
     // Renames files for browser caching purposes
     rev: {
@@ -235,19 +224,15 @@ module.exports = function (grunt) {
     htmlmin: {
       dist: {
         options: {
-          // Optional configurations that you can uncomment to use
-          // removeCommentsFromCDATA: true,
-          // collapseBooleanAttributes: true,
-          // removeAttributeQuotes: true,
-          // removeRedundantAttributes: true,
-          // useShortDoctype: true,
-          // removeEmptyAttributes: true,
-          // removeOptionalTags: true*/
+          collapseWhitespace: true,
+          collapseBooleanAttributes: true,
+          removeCommentsFromCDATA: true,
+          removeOptionalTags: true
         },
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>',
-          src: ['*.html', 'views/*.html'],
+          cwd: '<%= yeoman.dist %>',
+          src: ['*.html', 'views/{,*/}*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -284,6 +269,8 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
+            '*.html',
+            'views/{,*/}*.html',
             'bower_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/*'
@@ -292,9 +279,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
-          src: [
-            'generated/*'
-          ]
+          src: ['generated/*']
         }]
       },
       styles: {
@@ -319,8 +304,7 @@ module.exports = function (grunt) {
         'coffee',
         'copy:styles',
         'imagemin',
-        'svgmin',
-        'htmlmin'
+        'svgmin'
       ]
     },
 
@@ -367,8 +351,8 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'bower-install',
       'concurrent:server',
-      'configureProxies',
       'autoprefixer',
       'connect:livereload',
       'watch'
@@ -382,7 +366,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
-    'configureProxies',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
@@ -391,6 +374,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'bower-install',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
@@ -401,7 +385,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
