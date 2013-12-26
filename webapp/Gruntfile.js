@@ -7,6 +7,9 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+var modRewrite = require('connect-modrewrite');
+
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -63,13 +66,40 @@ module.exports = function (grunt) {
         hostname: 'localhost',
         livereload: 35729
       },
+      proxies: [
+        {
+          context: '/api',
+          host: 'localhost',
+          port: 5000,
+          https: false,
+          changeOrigin: true,
+          xforward: true
+        }
+      ],
       livereload: {
         options: {
           open: true,
           base: [
             '.tmp',
             '<%= yeoman.app %>'
-          ]
+          ],
+          // follow this workaround untill generator-angular support Html5Mode
+          // http://stackoverflow.com/questions/20653496/grunt-connect-modrewrite-do-not-work
+          // https://github.com/yeoman/generator-angular/issues/433
+          middleware: function (connect, options) {
+            var middlewares = [];
+
+            middlewares.push(modRewrite([
+              // add any patterns as you need.
+              '!/api|/assets|\\.png|\\.jpeg|\\.gif|\\.html|\\.js|\\.css|\\woff|\\ttf|\\swf$ /index.html'
+            ]));
+            options.base.forEach(function (base) {
+              // Serve static files.
+              middlewares.push(connect.static(base));
+            });
+            middlewares.push(proxySnippet);
+            return middlewares;
+          },
         }
       },
       test: {
@@ -353,6 +383,7 @@ module.exports = function (grunt) {
       'clean:server',
       'bower-install',
       'concurrent:server',
+      'configureProxies',
       'autoprefixer',
       'connect:livereload',
       'watch'
@@ -366,6 +397,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'configureProxies',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
