@@ -1,3 +1,13 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li><a ng-href="/">Home</a></li>
+    <li><a ng-href="/sign_in">Sign in</a></li>
+    <li><a ng-href="/sign_up">Sign up</a></li>
+    <li><a ng-href="/articles">Articles (only for signed in user)</a></li>
+  </ul>
+  <h3 class="text-muted">webapp</h3>
+</div>
+
 <form ng-submit="signUp()" class="wellform-inline">
   <h3>Sign up</h3>
   <input ng-model="user.email" type="email" val="Your email" placeholder="Email">

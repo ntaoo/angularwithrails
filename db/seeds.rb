@@ -9,3 +9,10 @@
 Article.create(title: 'sample1', body: 'sample article1')
 Article.create(title: 'sample2', body: 'sample article2')
 Article.create(title: 'sample3', body: 'sample article3')
+
+user = User.new do |user|
+  user.username = 'ntaoo'
+  user.password = 'aoeuidht'
+  user.email = 'ntaoo.g+github@gmail.com'
+end
+user.save!

@@ -3,9 +3,15 @@ Angularwithrails::Application.routes.draw do
 
   namespace :api, defaults: {format: 'json'}  do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
+      post 'sign_up' => 'sign_up#create'
       resources :articles
+      get 'touch' => 'touch#index'
     end
   end
+
+  # catch the other requests
+  get '*path' => 'app#boot'
+  root :to => 'app#boot'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
