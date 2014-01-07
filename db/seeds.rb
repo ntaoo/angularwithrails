@@ -12,7 +12,7 @@ Article.create(title: 'sample3', body: 'sample article3')
 
 user = User.new do |user|
   user.username = 'ntaoo'
-  user.password = 'aoeuidht'
-  user.email = 'ntaoo.g+github@gmail.com'
+  user.password = 'aoeuid'
+  user.email = 'ntaoo@example.com'
 end
 user.save!

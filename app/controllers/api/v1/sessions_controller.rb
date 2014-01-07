@@ -4,23 +4,15 @@ module Api
 
       skip_before_filter :require_login, :except => [:destroy]
 
-      #def new
-      #  logout
-      #end
-
       def create
         puts session_params['email']
         puts session_params['password']
         if login(session_params['email'], session_params['password'])
           render(
-              status: 200,
-              json: {
-                  success: true,
-                  info: "Signed In!",
-                  data: {
-                      user: {id: current_user.id, email: current_user.email}
-                  }
-              }
+            status: 200,
+            json: {
+              user: {id: current_user.id, email: current_user.email}
+            }
           )
         else
           render(
@@ -33,8 +25,15 @@ module Api
       end
 
       def destroy
+        puts 'destroy'
         logout
-        #redirect_to sign_in_url, :notice => 'Signed out!'
+        render(
+            status: 200,
+            json: {
+                success: true,
+                info: "Signed Out!",
+            }
+        )
       end
 
       def session_params

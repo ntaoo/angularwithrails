@@ -1,18 +1,10 @@
 'use strict'
 
-angular.module('app').controller('SignInCtrl', ["$scope", "$http", "$location", ($scope, $http, $location) ->
+angular.module('app').controller('SignInCtrl', ["$scope", "$http", "$location", "Authentication", ($scope, $http, $location, Authentication) ->
   $scope.user = null
 
   $scope.signIn = () ->
-    $http.post('/api/sessions', { session: { email: $scope.user.email, password: $scope.user.password } })
-    .success((data) ->
-        console.log 'signed in'
-        console.log data.info
-        $scope.$broadcast('event:authenticated')
-        $location.path('/')
-      )
-    .error((reason) ->
-        console.log 'error'
-        $scope.user.errors = reason
-      )
+    Authentication.signIn($scope.user.email, $scope.user.password).then((_) ->
+      console.log 'sign_in? TODO need improved'
+    )
 ])
