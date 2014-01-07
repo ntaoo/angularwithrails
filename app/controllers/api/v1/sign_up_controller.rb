@@ -10,19 +10,14 @@ module Api
           render(
             status: 200,
             json: {
-              success: true,
-              info: "Signed Up!",
-              data: {
-                user: {id: user.id, email: user.email}
-              }
+                currentUser: {id: current_user.id, email: current_user.email}
             }
           )
         else
           render(
-            status: :unprocessable_entity,
+            status: 422,
             json: {
-              success: false,
-              info: user.errors, data: {}
+              errors: user.errors
             }
           )
         end
