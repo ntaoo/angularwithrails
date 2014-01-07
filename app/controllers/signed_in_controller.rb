@@ -3,7 +3,12 @@ class SignedInController < ApplicationController
 
   protected
 
-  def not_authenticated   
-    redirect_to sign_in_path
+  def not_authenticated
+    render(
+      status: 401,
+      json: {
+        info: "Not Signed in"
+      }
+    )
   end
 end

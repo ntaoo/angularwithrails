@@ -6,7 +6,7 @@ module Api
       def create
         user = User.new(sign_up_params)
         if user.save
-          login(user.email, user.password)
+          auto_login(user)
           render(
             status: 200,
             json: {
