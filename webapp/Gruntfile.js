@@ -70,7 +70,7 @@ module.exports = function (grunt) {
         {
           context: '/api',
           host: 'localhost',
-          port: 5000,
+          port: 3000,
           https: false,
           changeOrigin: true,
           xforward: true
