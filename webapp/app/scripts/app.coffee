@@ -25,7 +25,7 @@ app.config(["$routeProvider", ($routeProvider) ->
   .when '/articles',
     templateUrl: 'views/articles.html'
     controller: 'ArticlesCtrl',
-    resolve: { checkCurrentUser: (Authentication) -> Authentication.checkCurrentUser() }
+    resolve: { checkCurrentUser: ["Authentication", (Authentication) -> Authentication.checkCurrentUser()] }
   .otherwise
     redirectTo: '/'
 ])
